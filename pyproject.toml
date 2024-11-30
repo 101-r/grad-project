@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "grad-project"
+version = "0.1.0"
+description = "Graduation Project"
+authors = ["101-r <ravshan.cau@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+pypdf = "^5.1.0"
+pymilvus = "^2.4.9"
+aiohttp = "^3.11.2"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.3"
+
+[tool.ruff]
+line-length = 200
+lint.select = ["E", "F", "W"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
