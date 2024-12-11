@@ -30,7 +30,7 @@ class TextModel():
         """
 
     async def summary(self, text: str) -> str | None:
-        op: str = "src.ollama.TextModel.query"
+        op: str = "src.ollama.TextModel.summary"
 
         prompt = self.default_prompt + "\n" + text
 
@@ -38,7 +38,8 @@ class TextModel():
             "model": "phi3",
             "prompt": prompt,
             "format": "json",
-            "stream": False
+            "stream": False,
+            "temperature": 0.5
         }
 
         try:
@@ -46,6 +47,7 @@ class TextModel():
                 async with session.post(self.url, json=payload, headers=self.headers) as response:
                     if response.status == 200:
                         result: dict = await response.json()
+
                         text: str = result.get("response", "no response field found")
 
                         # Remove newline characters
@@ -57,7 +59,7 @@ class TextModel():
                         # Remove quotes and curly braces
                         text = re.sub(r'[{}"]', '', text)
 
-                        return text
+                        return text.lower()
                     else:
                         log.error(f"API request failed with status {response.status} [{op}]")
                         return None
