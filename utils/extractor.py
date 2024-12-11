@@ -1,3 +1,5 @@
+import re
+
 from pypdf import PdfReader
 
 from .logger import log
@@ -30,6 +32,22 @@ class Extractor:
 
         except Exception as e:
             log.error(f"Error extracting the text of PDF file [{op}] \n{e}")
+            raise
+
+    def extract_keywords(self, summary: str) -> list[str] | None:
+        op: str = "utils.extractor.Extractor.extract_keywords"
+
+        try:
+            match = re.search(r"keywords:\s*\[(.*?)\]", summary)
+
+            if match:
+                keywords_str = match.group(1)
+                keywords = [keyword.strip() for keyword in keywords_str.split(",")]
+
+            return keywords
+
+        except Exception as e:
+            log.error(f"Error extracting the keywords from summary [{op}] \n{e}")
             raise
 
 
