@@ -1,4 +1,4 @@
-import uuid
+import hashlib
 
 from pymilvus import MilvusClient
 
@@ -24,17 +24,18 @@ class Milvus():
             log.error(f"Error initializing Milvus class [{op}] \n{e}")
             raise
 
-    def insert(self, path: str, embedding: list[float]) -> None:
+    def insert(self, path: str, embedding: list[float], keywords: list[str]) -> None:
         op: str = "utils.milvus.Milvus.insert"
 
         if len(embedding) != 768:
             raise ValueError(f"Embedding length does not match the schema's dimension [{op}]")
-        
+
         try:
             data = {
-                "id": uuid.uuid4().__str__(),
+                "id": hashlib.md5(path.encode()).hexdigest(),
                 "path": path,
-                "embeddings": embedding
+                "embeddings": embedding,
+                "keywords": keywords
             }
 
             self.client.insert(collection_name="embeddings", data=data)
