@@ -20,7 +20,7 @@ jobs:
         export PATH="$HOME/.local/bin:$PATH"
     - name: Install dependencies using Poetry
       run: |
-        poetry add --dev pylint
+        poetry add --group dev pylint
         poetry install
     - name: Analysing the code with pylint
       run: |
