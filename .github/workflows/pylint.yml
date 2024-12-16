@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies using Poetry
       run: |
         poetry add pylint
-        poetry update -vv
+        poetry install --no-root
     - name: Analysing the code with pylint
       run: |
         poetry run pylint $(git ls-files '*.py')
